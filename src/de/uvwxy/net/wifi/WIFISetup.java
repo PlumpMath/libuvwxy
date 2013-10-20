@@ -1,0 +1,17 @@
+package de.uvwxy.net.wifi;
+
+import android.content.Context;
+import android.net.wifi.WifiInfo;
+import android.net.wifi.WifiManager;
+
+public class WIFISetup {
+	public static String getIpAddr(Context ctx) {
+		WifiManager wifiManager = (WifiManager) ctx.getSystemService(Context.WIFI_SERVICE);
+		WifiInfo wifiInfo = wifiManager.getConnectionInfo();
+		int ip = wifiInfo.getIpAddress();
+
+		String ipString = String.format("%d.%d.%d.%d", (ip & 0xff), (ip >> 8 & 0xff), (ip >> 16 & 0xff), (ip >> 24 & 0xff));
+
+		return ipString;
+	}
+}
