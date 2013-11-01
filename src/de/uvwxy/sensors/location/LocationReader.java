@@ -12,8 +12,8 @@ import de.uvwxy.sensors.filters.LocationFilter;
 public abstract class LocationReader {
 	public final static long SECOND = 1000;
 	public final static long MINUTE = 60 * SECOND;
-	public final static long HOUR = 60* MINUTE;
-	
+	public final static long HOUR = 60 * MINUTE;
+
 	/**
 	 * Called when location requirement is met
 	 * 
@@ -74,7 +74,8 @@ public abstract class LocationReader {
 		}
 	};
 
-	public LocationReader(Context ctx, long millisDuration, float accuracy, LocationStatusCallback cbStatus, LocationResultCallback cbResult) {
+	public LocationReader(Context ctx, long millisDuration, float accuracy, LocationStatusCallback cbStatus,
+			LocationResultCallback cbResult) {
 		if (ctx == null) {
 			throw new RuntimeException("Context can not be null");
 		}
@@ -114,7 +115,7 @@ public abstract class LocationReader {
 
 	protected void updateLocation(Location l) {
 		lastLocation = l;
-		
+
 		for (LocationFilter f : locationFilters) {
 			// apply possible filters
 			lastLocation = f.filter(lastLocation); // call non inplace variant
@@ -147,6 +148,22 @@ public abstract class LocationReader {
 
 	public void stopReading() {
 		lm.removeUpdates(mLocationListener);
+	}
+
+	/**
+	 * Check if the given provider is enabled. Example:
+	 * LocationReader.isEnabled(getContext(), LocationManager.GPS_PROVIDER)
+	 * 
+	 * @param ctx
+	 *            the Application Context
+	 * @param provider
+	 *            the location provider
+	 * @return true if the provider is enabled
+	 */
+	public static boolean isEnabled(Context ctx, String provider) {
+		LocationManager manager = (LocationManager) ctx.getSystemService(Context.LOCATION_SERVICE);
+
+		return manager.isProviderEnabled(provider);
 	}
 
 	protected abstract void registerSensors(LocationListener mLocationListener2, LocationManager lm2);
