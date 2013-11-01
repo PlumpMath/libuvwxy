@@ -18,6 +18,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
+import android.location.Location;
 import android.net.Uri;
 import android.provider.MediaStore;
 import android.util.TypedValue;
@@ -67,24 +68,46 @@ public class IntentTools {
 
 	}
 
-	public static void shareLocation(Context ctx, String mapUrl, double lat, double lon, double alt, double bearing, double acc, String title, String slat,
-			String slon, String salt, String sbear, String sacc, String msgLenTxt, String msgShareViaTxt) {
+	public static final int TYPE_GMAPS = 0;
+	public static final int TYPE_OSM = 1;
+
+	public static void shareLocation(Context ctx, Location l, int type, String title, String slat, String slon,
+			String salt, String sbear, String sacc, String sspeed, String msgLenTxt, String msgShareViaTxt) {
+		String mapUrl = "MapTypeNotFound";
+		switch (type) {
+		case TYPE_GMAPS:
+			mapUrl = getGoogleMapsUrl(l.getLatitude(), l.getLongitude());
+			break;
+		case TYPE_OSM:
+			mapUrl = getOSMMapsUrl(l.getLatitude(), l.getLongitude());
+			break;
+		default:
+			throw new RuntimeException("Map type not found: " + type);
+		}
+		shareLocation(ctx, mapUrl, l.getLatitude(), l.getLongitude(), l.getAltitude(), l.getBearing(), l.getAccuracy(),
+				l.getSpeed(), title, slat, slon, salt, sbear, sacc, sspeed, msgLenTxt, msgShareViaTxt);
+	}
+
+	public static void shareLocation(Context ctx, String mapUrl, double lat, double lon, double alt, double bearing,
+			double acc, double speed, String title, String slat, String slon, String salt, String sbear, String sacc,
+			String sspeed, String msgLenTxt, String msgShareViaTxt) {
 		// https://maps.google.com/maps?q=50.070,+7.666
-		String url = mapUrl;
+		String msg = mapUrl;
 
 		NumberFormat nf = NumberFormat.getInstance();
 		nf.setMaximumFractionDigits(8);
-		url += "\n" + slat + nf.format(lat) + " °";
-		url += "\n" + slon + nf.format(lon) + " °";
-		url += "\n" + salt + String.format("%.1f", alt) + " m";
-		url += "\n" + sbear + String.format("%.1f", bearing) + " °";
-		url += "\n" + sacc + String.format("%.1f", acc) + " m";
+		msg += "\n" + slat + nf.format(lat) + " °";
+		msg += "\n" + slon + nf.format(lon) + " °";
+		msg += "\n" + salt + String.format("%.1f", alt) + " m";
+		msg += "\n" + sspeed + String.format("%.1f", speed) + " m";
+		msg += "\n" + sbear + String.format("%.1f", bearing) + " °";
+		msg += "\n" + sacc + String.format("%.1f", acc) + " m";
 
 		Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
 		sharingIntent.setType("text/plain");
 		sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, title);
-		sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, url);
-		Toast.makeText(ctx, msgLenTxt + url.length(), Toast.LENGTH_SHORT).show();
+		sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, msg);
+		Toast.makeText(ctx, msgLenTxt + msg.length(), Toast.LENGTH_SHORT).show();
 		ctx.startActivity(Intent.createChooser(sharingIntent, msgShareViaTxt));
 	}
 
@@ -100,7 +123,8 @@ public class IntentTools {
 		public void result(StringE<E> stringE);
 	}
 
-	public static void userSelectString(Activity a, String title, final String[] items, final ReturnStringCallback selected) {
+	public static void userSelectString(Activity a, String title, final String[] items,
+			final ReturnStringCallback selected) {
 		if (a == null || selected == null || items == null) {
 			throw new RuntimeException("Parameters are not allowed to be null");
 		}
@@ -126,7 +150,8 @@ public class IntentTools {
 
 	}
 
-	public static <E> void userSelectStringE(Context ctx, String title, final List<StringE<E>> items, final ReturnStringECallback<E> selected) {
+	public static <E> void userSelectStringE(Context ctx, String title, final List<StringE<E>> items,
+			final ReturnStringECallback<E> selected) {
 		if (ctx == null || selected == null || items == null) {
 			throw new RuntimeException("Parameters are not allowed to be null");
 		}
@@ -230,8 +255,8 @@ public class IntentTools {
 		return editor.commit();
 	}
 
-	public static void getFromSettingsOrFromUser(final Context ctx, final String settingsId, final String valueId, String textHint, String textMessage,
-			String textTitle, boolean update, final SettingsCallback callback) {
+	public static void getFromSettingsOrFromUser(final Context ctx, final String settingsId, final String valueId,
+			String textHint, String textMessage, String textTitle, boolean update, final SettingsCallback callback) {
 		Preconditions.checkNotNull(ctx);
 		Preconditions.checkNotNull(settingsId);
 		Preconditions.checkNotNull(valueId);
@@ -316,7 +341,8 @@ public class IntentTools {
 					ClipData clip = ClipData.newPlainText(label, ((TextView) tv).getText().toString());
 					cm.setPrimaryClip(clip);
 				} else {
-					android.text.ClipboardManager cmDepr = (android.text.ClipboardManager) ctx.getSystemService(Context.CLIPBOARD_SERVICE);
+					android.text.ClipboardManager cmDepr = (android.text.ClipboardManager) ctx
+							.getSystemService(Context.CLIPBOARD_SERVICE);
 					cmDepr.setText(((TextView) tv).getText().toString());
 				}
 				Toast.makeText(ctx, label + " " + ((TextView) tv).getText().toString(), Toast.LENGTH_SHORT).show();
@@ -331,8 +357,8 @@ public class IntentTools {
 		LinearLayout llVertical = new LinearLayout(ctx);
 		llVertical.setOrientation(LinearLayout.VERTICAL);
 
-		android.widget.LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
-				LinearLayout.LayoutParams.WRAP_CONTENT);
+		android.widget.LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
+				LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
 		int dip = BitmapTools.dipToPixels(ctx, 8);
 		params.setMargins(dip, dip, dip, dip);
 		llVertical.setLayoutParams(params);
@@ -361,7 +387,8 @@ public class IntentTools {
 		dialog.show();
 	}
 
-	public static boolean showHelpOnce(Context ctx, String prefs, String dialogTitle, String btnBackText, String helpText) {
+	public static boolean showHelpOnce(Context ctx, String prefs, String dialogTitle, String btnBackText,
+			String helpText) {
 		String SHOW_HELP = "SHOW_HELP";
 		SharedPreferences settings = ctx.getSharedPreferences(prefs, 0);
 		boolean showHelp = settings.getBoolean(SHOW_HELP, true);
@@ -406,7 +433,8 @@ public class IntentTools {
 		act.startActivity(my_intent);
 	}
 
-	public static void toggleSettings(final Context ctx, CheckBox cb, final String settingsID, final String settingsKey, boolean defValue) {
+	public static void toggleSettings(final Context ctx, CheckBox cb, final String settingsID,
+			final String settingsKey, boolean defValue) {
 		if (cb == null) {
 			return;
 		}
