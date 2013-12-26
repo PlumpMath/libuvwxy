@@ -1,5 +1,7 @@
 package de.uvwxy.units;
 
+import android.util.Log;
+
 
 public class UnitPartitionDegreesMinutesSeconds implements UnitPartition {
 
@@ -10,6 +12,7 @@ public class UnitPartitionDegreesMinutesSeconds implements UnitPartition {
 			// Minutes
 			double x = value;
 			x = (x - (int) x) * 60.0;
+			x = Math.floor(x);
 			return String.format("%." + precision + "f", x);
 		case 2:
 			// Seconds
@@ -18,6 +21,7 @@ public class UnitPartitionDegreesMinutesSeconds implements UnitPartition {
 			x = (x - (int) x) * 60.0;
 			return String.format("%." + precision + "f", x);
 		default:
+			value = Math.floor(value);
 			// Degrees
 			return String.format("%." + precision + "f", value);
 		}

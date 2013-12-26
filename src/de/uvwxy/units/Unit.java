@@ -11,7 +11,7 @@ public enum Unit {
 	MILES_PER_HOUR("mp/h", 1),
 
 	DEGREES("°", 2), //
-	DEGREES_MINUTES_SECONDS(new String[] { "°", "'", "''" }, new UnitPartitionDegreesMinutesSeconds(), 0, 0, 0);
+	DEGREES_MINUTES_SECONDS(new String[] { "°", "'", "''" }, new UnitPartitionDegreesMinutesSeconds(), 0, 0, 2);
 
 	private String[] unit;
 	private UnitPrefix[] prefix = new UnitPrefix[] { UnitPrefix.NONE };
