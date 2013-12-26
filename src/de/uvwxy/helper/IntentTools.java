@@ -21,6 +21,7 @@ import android.content.SharedPreferences.Editor;
 import android.location.Location;
 import android.net.Uri;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -30,6 +31,7 @@ import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.RadioButton;
 import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -454,4 +456,22 @@ public class IntentTools {
 		});
 	}
 
+	public static void switchSettings(final Context ctx, RadioButton rb, final String settingsID,
+			final String settingsKey, final int thisRBID) {
+		SharedPreferences prefs = getSettings(ctx, settingsID);
+		rb.setChecked(prefs.getInt(settingsKey, 0) == thisRBID);
+		Log.d("UVWXY", "settingsID = " + settingsID + " settingsKey = " + settingsKey + " id = " + thisRBID);
+		Log.d("UVWXY", "prefs is " + prefs.getInt(settingsKey, 0));
+		rb.setOnCheckedChangeListener(new OnCheckedChangeListener() {
+
+			@Override
+			public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+				if (isChecked) {
+					Editor e = getSettingsEditor(ctx, settingsID);
+					e.putInt(settingsKey, thisRBID);
+					e.commit();
+				}
+			}
+		});
+	}
 }
