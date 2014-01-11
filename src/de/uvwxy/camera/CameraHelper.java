@@ -8,6 +8,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.hardware.Camera;
@@ -16,6 +17,7 @@ import android.net.Uri;
 import android.os.Environment;
 import android.util.Log;
 
+@SuppressLint("SimpleDateFormat")
 public class CameraHelper {
 	private static final String TAG = "CAM";
 
@@ -79,6 +81,7 @@ public class CameraHelper {
 	}
 
 	// saveImage(data);
+	@SuppressWarnings("unused")
 	private static void saveImage(byte[] data) {
 		File pictureFile = getOutputMediaFile(MEDIA_TYPE_IMAGE);
 		if (pictureFile == null) {
@@ -98,6 +101,7 @@ public class CameraHelper {
 	}
 
 	/** Create a file Uri for saving an image or video */
+	@SuppressWarnings("unused")
 	private static Uri getOutputMediaFileUri(int type) {
 		return Uri.fromFile(getOutputMediaFile(type));
 	}

@@ -1,8 +1,5 @@
 package de.uvwxy.units;
 
-import android.util.Log;
-
-
 public class UnitPartitionDegreesMinutesSeconds implements UnitPartition {
 
 	@Override

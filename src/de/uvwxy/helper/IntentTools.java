@@ -335,6 +335,7 @@ public class IntentTools {
 	public static void addCopyTextOnClickListner(final Context ctx, final TextView tv, final String label) {
 		tv.setOnClickListener(new OnClickListener() {
 
+			@SuppressWarnings("deprecation")
 			@Override
 			public void onClick(View v) {
 				int currentapiVersion = android.os.Build.VERSION.SDK_INT;

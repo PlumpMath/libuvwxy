@@ -69,6 +69,7 @@ public class BTConnectionSetup extends AConnectionSetup {
 
 		public void run() {
 			boolean reset = false;
+			@SuppressWarnings("unused")
 			int count = 0;
 			while (true) {
 				//				fffLog.i("KILLX", "I " + count);
@@ -133,7 +134,9 @@ public class BTConnectionSetup extends AConnectionSetup {
 
 						@Override
 						public void run() {
-							Toast.makeText(ctx, "Bluetooth server failed. Please restart bluetooth MANUALLY in a few seconds", Toast.LENGTH_LONG).show();
+							Toast.makeText(ctx,
+									"Bluetooth server failed. Please restart bluetooth MANUALLY in a few seconds",
+									Toast.LENGTH_LONG).show();
 						}
 					});
 					break;
@@ -144,7 +147,8 @@ public class BTConnectionSetup extends AConnectionSetup {
 					// Do work to manage the connection (in a separate thread)
 					// manageConnectedSocket(socket);
 					try {
-						BTConnection tmpConnection = new BTConnection(socket, socket.getRemoteDevice().getAddress(), null);
+						BTConnection tmpConnection = new BTConnection(socket, socket.getRemoteDevice().getAddress(),
+								null);
 						tmpConnection.setIn(socket.getInputStream());
 						tmpConnection.setOut(socket.getOutputStream());
 						tmpConnection.setmBluetoothDevice(socket.getRemoteDevice());
@@ -186,7 +190,8 @@ public class BTConnectionSetup extends AConnectionSetup {
 		private Object commLock;
 		private BTConnection mmConnection;
 
-		public BtClientSetupThread(IProtocol protocol, IConnectHandler handler, BluetoothDevice device, UUID uuid, Object commLock) {
+		public BtClientSetupThread(IProtocol protocol, IConnectHandler handler, BluetoothDevice device, UUID uuid,
+				Object commLock) {
 			Preconditions.checkNotNull(uuid);
 			Preconditions.checkNotNull(device);
 			Preconditions.checkNotNull(handler);
@@ -292,6 +297,7 @@ public class BTConnectionSetup extends AConnectionSetup {
 			}
 		}
 
+		@SuppressWarnings("unused")
 		public synchronized void setRegistered(boolean b) {
 			mmRegistered = b;
 		}
@@ -398,7 +404,6 @@ public class BTConnectionSetup extends AConnectionSetup {
 	}
 
 	private ICancelHandler ic;
-	private static boolean isClientConnected = false;
 
 	@Override
 	public ICancelHandler connect(IProtocol protocol, IConnectHandler handler, String address, Object commLock) {
@@ -454,19 +459,19 @@ public class BTConnectionSetup extends AConnectionSetup {
 
 	@Override
 	public void setInterfaceEnabled(boolean enabled) {
-		if (mBTAdapter == null){
+		if (mBTAdapter == null) {
 			return;
 		}
-		
+
 		if (enabled) {
 			mBTAdapter.enable();
 		} else {
 			mBTAdapter.disable();
 		}
 	}
-	
-	public boolean isInterfaceEnabled(){
-		if (mBTAdapter == null){
+
+	public boolean isInterfaceEnabled() {
+		if (mBTAdapter == null) {
 			return false;
 		}
 		return mBTAdapter.isEnabled();

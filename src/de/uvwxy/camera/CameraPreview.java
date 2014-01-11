@@ -1,7 +1,6 @@
 package de.uvwxy.camera;
 
-import java.io.IOException;
-
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.hardware.Camera;
 import android.util.Log;
@@ -9,6 +8,7 @@ import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
 /** A basic Camera preview class */
+@SuppressLint("ViewConstructor")
 public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback {
 	private final static String TAG = "SABCAM";
 
@@ -23,6 +23,7 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
 	 * @param context
 	 * @param camera
 	 */
+	@SuppressWarnings("deprecation")
 	public CameraPreview(Context context, Camera camera) {
 		super(context);
 		mCamera = camera;

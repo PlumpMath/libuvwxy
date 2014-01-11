@@ -23,6 +23,7 @@ public abstract class SensorReader {
 	private long mRequiredMillisDuration = -1;
 	protected static SensorManager sm;
 	private SensorResultCallback mCallbackResult;
+	@SuppressWarnings("unused")
 	private Context mCtx;
 
 	protected SensorReader mThis = null;

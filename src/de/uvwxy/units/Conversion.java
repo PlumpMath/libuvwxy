@@ -5,7 +5,6 @@ public class Conversion {
 	private Unit a;
 	private Unit b;
 	private double factor;
-	private String id;
 
 	/**
 	 * To convert from a to b we apply the factor to a: a*factor=b. Thus
@@ -20,11 +19,13 @@ public class Conversion {
 		this.b = b;
 		this.factor = factor;
 	}
-	public static String createKey(Unit a, Unit b){
+
+	public static String createKey(Unit a, Unit b) {
 		return a.name() + ID_DELIM + b.name();
 	}
+
 	public String getKey() {
-		return createKey(a,b);
+		return createKey(a, b);
 	}
 
 	public Unit to(Unit to, double value) {

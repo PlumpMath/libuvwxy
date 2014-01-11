@@ -40,8 +40,10 @@ public class FileTools {
 
 	/**
 	 * Returns true if we have a writable external storage.
+	 * TODO: return available, or rename to writeable
 	 */
 	public static boolean isStorageAvailable() {
+		@SuppressWarnings("unused")
 		boolean mExternalStorageAvailable = false;
 		boolean mExternalStorageWriteable = false;
 		String state = Environment.getExternalStorageState();

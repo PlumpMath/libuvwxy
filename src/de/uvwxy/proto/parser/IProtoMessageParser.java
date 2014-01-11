@@ -1,6 +1,5 @@
 package de.uvwxy.proto.parser;
 
-import java.io.IOException;
 import java.io.InputStream;
 
 import com.google.protobuf.MessageOrBuilder;

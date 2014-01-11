@@ -39,6 +39,7 @@ public class MockLocationProviderFromAsset implements Runnable {
 	@Override
 	public void run() {
 		long sleepTime = 1000;
+		@SuppressWarnings("unused") // TODO: remove?
 		int posNum = 0;
 		for (String str : lines) {
 			posNum++;

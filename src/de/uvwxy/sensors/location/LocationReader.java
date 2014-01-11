@@ -40,6 +40,7 @@ public abstract class LocationReader {
 	protected static LocationManager lm;
 	private LocationResultCallback mCallbackResult;
 	private LocationStatusCallback mCallbackStatus;
+	@SuppressWarnings("unused")
 	private Context mCtx;
 
 	protected LocationReader mThis = null;

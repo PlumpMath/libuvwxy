@@ -6,11 +6,9 @@ import java.util.List;
 import org.osmdroid.bonuspack.overlays.ExtendedOverlayItem;
 import org.osmdroid.util.GeoPoint;
 import org.osmdroid.views.MapView;
-import org.osmdroid.views.overlay.OverlayItem;
 
 import android.app.Activity;
 import android.content.Context;
-import android.location.Location;
 
 import com.google.common.base.Preconditions;
 

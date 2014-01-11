@@ -10,18 +10,14 @@ import org.osmdroid.views.MapView;
 import org.osmdroid.views.MapView.Projection;
 import org.osmdroid.views.overlay.ItemizedIconOverlay;
 import org.osmdroid.views.overlay.OverlayItem;
-import org.osmdroid.views.safecanvas.ISafeCanvas;
 import org.osmdroid.views.safecanvas.SafeTranslatedCanvas;
 
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
-import android.graphics.Matrix;
 import android.graphics.Paint;
-import android.graphics.Paint.Style;
 import android.graphics.Point;
 import android.graphics.Rect;
-import android.location.Location;
 import android.util.Log;
 
 /**
@@ -35,10 +31,10 @@ import android.util.Log;
  * 
  * @author Original author M.Kergall, modified by Paul Smith
  */
-public class ItemizedOverlayWithBubble<Item extends OverlayItem> extends ItemizedIconOverlay<Item> {
+public class ItemizedOverlayWithBubble<Item extends ExtendedOverlayItem> extends ItemizedIconOverlay<Item> {
 	;
 	protected InfoWindow mBubble; //only one for all items of this overlay => one at a time
-	protected OverlayItem mItemWithBubble; //the item currently showing the bubble. Null if none. 
+	protected Item mItemWithBubble; //the item currently showing the bubble. Null if none. 
 
 	private static final SafeTranslatedCanvas sSafeCanvas = new SafeTranslatedCanvas();
 
@@ -48,12 +44,12 @@ public class ItemizedOverlayWithBubble<Item extends OverlayItem> extends Itemize
 			final InfoWindow bubble) {
 		super(context, aList, new OnItemGestureListener<Item>() {
 			@Override
-			public boolean onItemSingleTapUp(final int index, final OverlayItem item) {
+			public boolean onItemSingleTapUp(final int index, final Item item) {
 				return false;
 			}
 
 			@Override
-			public boolean onItemLongPress(final int index, final OverlayItem item) {
+			public boolean onItemLongPress(final int index, final Item item) {
 				return false;
 			}
 		});
@@ -88,7 +84,7 @@ public class ItemizedOverlayWithBubble<Item extends OverlayItem> extends Itemize
 	 * @param mapView
 	 */
 	public void showBubbleOnItem(final int index, final MapView mapView, boolean panIntoView) {
-		ExtendedOverlayItem eItem = (ExtendedOverlayItem) (getItem(index));
+		Item eItem = getItem(index);
 		mItemWithBubble = eItem;
 		if (eItem != null) {
 			eItem.showBubble(mBubble, mapView, panIntoView);
