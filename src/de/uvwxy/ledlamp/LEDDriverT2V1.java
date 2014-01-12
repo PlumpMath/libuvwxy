@@ -12,27 +12,27 @@ public class LEDDriverT2V1 extends LEDDriver {
 
 	@Override
 	public void setBlue(int b) throws IOException {
-		getCon().getOut().write(("B;" + b).getBytes());
+		getCon().getOut().write(("B;" + b + "\n").getBytes());
 	}
 
 	@Override
 	public void setGreen(int g) throws IOException {
-		getCon().getOut().write(("G;" + g).getBytes());
+		getCon().getOut().write(("G;" + g + "\n").getBytes());
 	}
 
 	@Override
 	public void setRed(int r) throws IOException {
-		getCon().getOut().write(("R;" + r).getBytes());
+		getCon().getOut().write(("R;" + r + "\n").getBytes());
 	}
 
 	@Override
 	public void setSpeed(int s) throws IOException {
-		//getCon().getOut().write(("B;" + s).getBytes());
+		//getCon().getOut().write(("B;" + s + "\n").getBytes());
 	}
 
 	@Override
 	public void setWhite(int w) throws IOException {
-		getCon().getOut().write(("W;" + w).getBytes());
+		getCon().getOut().write(("W;" + w + "\n").getBytes());
 	}
 
 }
