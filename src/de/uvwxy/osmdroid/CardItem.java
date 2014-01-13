@@ -12,14 +12,14 @@ import android.widget.ImageView;
 
 import com.google.common.base.Preconditions;
 
-public class NodeBubble extends DefaultInfoWindow {
+public class CardItem extends DefaultInfoWindow {
 	private Object o;
 	@SuppressWarnings("unused")
 	private Context ctx;
 	@SuppressWarnings("unused")
 	private Activity act;
 
-	public NodeBubble(MapView mapView, final Activity act, Context ctx) {
+	public CardItem(MapView mapView, final Activity act, Context ctx) {
 		super(android.R.layout.activity_list_item, mapView);
 
 		Preconditions.checkNotNull(ctx);

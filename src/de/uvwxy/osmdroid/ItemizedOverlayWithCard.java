@@ -26,21 +26,21 @@ import android.util.Log;
  * Items must be ExtendedOverlayItem. <br>
  * 
  * 
- * @see ExtendedOverlayItem
+ * @see CardOverlayItem
  * @see InfoWindow
  * 
  * @author Original author M.Kergall, modified by Paul Smith
  */
-public class ItemizedOverlayWithBubble<Item extends ExtendedOverlayItem> extends ItemizedIconOverlay<Item> {
+public class ItemizedOverlayWithCard<Item extends ExtendedOverlayItem> extends ItemizedIconOverlay<Item> {
 	;
 	protected InfoWindow mBubble; //only one for all items of this overlay => one at a time
-	protected Item mItemWithBubble; //the item currently showing the bubble. Null if none. 
+	protected Item cardItem; //the item currently showing the card. Null if none. 
 
 	private static final SafeTranslatedCanvas sSafeCanvas = new SafeTranslatedCanvas();
 
 	static int layoutResId = 0;
 
-	public ItemizedOverlayWithBubble(final Context context, final List<Item> aList, final MapView mapView,
+	public ItemizedOverlayWithCard(final Context context, final List<Item> aList, final MapView mapView,
 			final InfoWindow bubble) {
 		super(context, aList, new OnItemGestureListener<Item>() {
 			@Override
@@ -67,10 +67,10 @@ public class ItemizedOverlayWithBubble<Item extends ExtendedOverlayItem> extends
 			}
 			mBubble = new DefaultInfoWindow(layoutResId, mapView);
 		}
-		mItemWithBubble = null;
+		cardItem = null;
 	}
 
-	public ItemizedOverlayWithBubble(final Context context, final List<Item> aList, final MapView mapView) {
+	public ItemizedOverlayWithCard(final Context context, final List<Item> aList, final MapView mapView) {
 		this(context, aList, mapView, null);
 	}
 
@@ -85,7 +85,7 @@ public class ItemizedOverlayWithBubble<Item extends ExtendedOverlayItem> extends
 	 */
 	public void showBubbleOnItem(final int index, final MapView mapView, boolean panIntoView) {
 		Item eItem = getItem(index);
-		mItemWithBubble = eItem;
+		cardItem = eItem;
 		if (eItem != null) {
 			eItem.showBubble(mBubble, mapView, panIntoView);
 			//setFocus((Item)eItem);
@@ -97,7 +97,7 @@ public class ItemizedOverlayWithBubble<Item extends ExtendedOverlayItem> extends
 	 */
 	public void hideBubble() {
 		mBubble.close();
-		mItemWithBubble = null;
+		cardItem = null;
 	}
 
 	@Override
@@ -111,7 +111,7 @@ public class ItemizedOverlayWithBubble<Item extends ExtendedOverlayItem> extends
 	/** @return the item currently showing the bubble, or null if none. */
 	public OverlayItem getBubbledItem() {
 		if (mBubble.isOpen())
-			return mItemWithBubble;
+			return cardItem;
 		else
 			return null;
 	}
@@ -131,7 +131,7 @@ public class ItemizedOverlayWithBubble<Item extends ExtendedOverlayItem> extends
 	@Override
 	public synchronized Item removeItem(final int position) {
 		Item result = super.removeItem(position);
-		if (mItemWithBubble == result) {
+		if (cardItem == result) {
 			hideBubble();
 		}
 		return result;
@@ -140,7 +140,7 @@ public class ItemizedOverlayWithBubble<Item extends ExtendedOverlayItem> extends
 	@Override
 	public synchronized boolean removeItem(final Item item) {
 		boolean result = super.removeItem(item);
-		if (mItemWithBubble == item) {
+		if (cardItem == item) {
 			hideBubble();
 		}
 		return result;
@@ -169,45 +169,40 @@ public class ItemizedOverlayWithBubble<Item extends ExtendedOverlayItem> extends
 		p.setColor(Color.GRAY);
 		p.setAntiAlias(true);
 
-		//1. Fixing drawing focused item on top in ItemizedOverlay (osmdroid issue 354):
-		//2. Fixing lack of synchronization on mItemList
 		if (shadow) {
-			for (int i = size; i >= 0; i--) {
-				final Item item = getItem(i);
-				if (item instanceof ExtendedOverlayItem) {
-					ExtendedOverlayItem e = (ExtendedOverlayItem) item;
-					Object o = e.getRelatedObject();
-					
-					if (o == null) {
-						continue;
-					}
-
-					if (o instanceof AOverlayExtractor<?>) {
-						AOverlayExtractor<?> ae = ((AOverlayExtractor<?>) o);
-						
-						pj.toMapPixels(item.getPoint(), mCurScreenCoords);
-						ae.draw(canvas, mCurScreenCoords, pj);
-					}
-				}
-			}
 			return;
 		}
 
+		for (int i = size; i >= 0; i--) {
+			final Item item = getItem(i);
+			if (item instanceof CardOverlayItem<?>) {
+				CardOverlayItem<?> e = (CardOverlayItem<?>) item;
+				Object o = e.getRelatedObject();
+				if (o == null) {
+					continue;
+				}
+				pj.toMapPixels(item.getPoint(), mCurScreenCoords);
+				e.getExtractor().draw(sSafeCanvas.getWrappedCanvas(), mCurScreenCoords, pj);
+			}
+		}
+		
 		/*
 		 * Draw in backward cycle, so the items with the least index are on the
 		 * front.
 		 */
 		for (int i = size; i >= 0; i--) {
 			final Item item = getItem(i);
-			if (item != mItemWithBubble) {
+			if (item != cardItem) {
 				pj.toMapPixels(item.getPoint(), mCurScreenCoords);
+				Log.d("UVWXY", "x " + mCurScreenCoords.x);
+				Log.d("UVWXY", "y " + mCurScreenCoords.y);
 				onDrawItem(sSafeCanvas, item, mCurScreenCoords, 0f);
 			}
 		}
 		//draw focused item last:
-		if (mItemWithBubble != null) {
-			pj.toMapPixels(mItemWithBubble.getPoint(), mCurScreenCoords);
-			onDrawItem(sSafeCanvas, (Item) mItemWithBubble, mCurScreenCoords, 0f);
+		if (cardItem != null) {
+			pj.toMapPixels(cardItem.getPoint(), mCurScreenCoords);
+			onDrawItem(sSafeCanvas, (Item) cardItem, mCurScreenCoords, 0f);
 		}
 	}
 
