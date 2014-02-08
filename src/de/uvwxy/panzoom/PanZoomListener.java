@@ -1,7 +1,6 @@
 package de.uvwxy.panzoom;
 
 import android.graphics.PointF;
-import android.util.FloatMath;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnTouchListener;
@@ -67,7 +66,7 @@ public class PanZoomListener implements OnTouchListener {
 			case ZOOM:
 				float x = event.getX(0) - event.getX(1);
 				float y = event.getY(0) - event.getY(1);
-				float d = FloatMath.sqrt(x * x + y * y);
+				float d = (float) Math.sqrt(x * x + y * y);
 				float s = d / oldZoomDistPixels;
 				if (reset_first_scale_value) {
 					s = 1f;
@@ -78,6 +77,12 @@ public class PanZoomListener implements OnTouchListener {
 
 				panZoomResult.type = PanZoomType.ZOOM;
 				panZoomResult.scale = s;
+				break;
+			case CLICK:
+				break;
+			case NONE:
+				break;
+			default:
 				break;
 			}
 			break;
