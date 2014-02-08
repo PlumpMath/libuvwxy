@@ -2,6 +2,7 @@ package de.uvwxy.paintbox;
 
 import android.content.Context;
 import android.graphics.Canvas;
+import android.graphics.PixelFormat;
 import android.util.AttributeSet;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
@@ -16,6 +17,8 @@ import android.view.SurfaceView;
 public abstract class PaintBox extends SurfaceView implements SurfaceHolder.Callback {
 
 	PaintThread pThread;
+	protected boolean oldMode = true;
+
 
 	public PaintBox(Context context) {
 		super(context);
@@ -56,7 +59,16 @@ public abstract class PaintBox extends SurfaceView implements SurfaceHolder.Call
 		}
 	}
 
+	public void setTransparentTop(){
+		setZOrderOnTop(true);
+		getHolder().setFormat(PixelFormat.TRANSLUCENT);
+	}
+	
+
+	public void setNewMode(){
+		oldMode = false;
+	}
+	
 	@Override
 	protected abstract void onDraw(Canvas canvas);
-
 }

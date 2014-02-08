@@ -1,8 +1,8 @@
 package de.uvwxy.paintbox;
 
+import android.annotation.SuppressLint;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
-import android.util.Log;
 import android.view.SurfaceHolder;
 
 /**
@@ -33,13 +33,50 @@ class PaintThread extends Thread {
 
 	@Override
 	public void run() {
+		if (pBox.oldMode) {
+			runOld();
+		} else {
+			runNew();
+		}
+
+	}
+
+	@SuppressLint("WrongCall")
+	private void runNew() {
 		Canvas c;
 
 		while (bRunning) {
 
 			// draw onto back buffered canvas if everything ok.
 			if (height != -1 && width != -1 && bufferedCanvas != null)
-				pBox.draw(bufferedCanvas);
+				;
+
+			c = null;
+			try {
+				c = surfaceHolder.lockCanvas();
+
+				synchronized (surfaceHolder) {
+					if (c != null) {
+						pBox.onDraw(c);
+					}
+				}
+			} finally {
+				if (c != null) {
+					surfaceHolder.unlockCanvasAndPost(c);
+				}
+			}
+		}
+	}
+
+	@SuppressLint("WrongCall")
+	private void runOld() {
+		Canvas c;
+
+		while (bRunning) {
+
+			// draw onto back buffered canvas if everything ok.
+			if (height != -1 && width != -1 && bufferedCanvas != null)
+				pBox.onDraw(bufferedCanvas);
 
 			c = null;
 			try {
@@ -47,13 +84,11 @@ class PaintThread extends Thread {
 				synchronized (surfaceHolder) {
 					if (c != null) {
 						// if one of the following components go bozuk, update the buffers
-						if (bufferedCanvas == null || buffer == null || c.getWidth() != width
-								|| c.getHeight() != c.getHeight()) {
+						if (bufferedCanvas == null || buffer == null || c.getWidth() != width || c.getHeight() != c.getHeight()) {
 							width = c.getWidth();
 							height = c.getHeight();
 							buffer = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
 							bufferedCanvas = new Canvas(buffer);
-							Log.i("PAINTBOX", "Created Bitmap");
 						}
 						c.drawBitmap(buffer, 0, 0, null);
 					}
