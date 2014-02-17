@@ -5,6 +5,8 @@ import java.io.ByteArrayOutputStream;
 import com.google.common.base.Preconditions;
 
 import android.content.Context;
+import android.content.pm.PackageManager;
+import android.content.pm.PackageManager.NameNotFoundException;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.CompressFormat;
@@ -113,5 +115,18 @@ public class BitmapTools {
 		canvas.drawBitmap(input, src, dst, paint);
 
 		return bm;
+	}
+
+	public static Drawable getPackageIcon(Context ctx, String packageName) {
+		Drawable ret = null;
+		PackageManager pk = ctx.getPackageManager();
+
+		try {
+			ret = pk.getApplicationIcon(packageName);
+		} catch (NameNotFoundException e) {
+			e.printStackTrace();
+		}
+
+		return ret;
 	}
 }

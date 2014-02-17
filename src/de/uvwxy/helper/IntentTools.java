@@ -475,4 +475,9 @@ public class IntentTools {
 			}
 		});
 	}
+	
+	public static boolean isApiLarger(int apiVersion){
+		int apiV = android.os.Build.VERSION.SDK_INT;
+		return apiV > apiVersion;
+	}
 }
