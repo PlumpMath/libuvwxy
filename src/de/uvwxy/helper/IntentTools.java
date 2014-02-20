@@ -84,8 +84,8 @@ public class IntentTools {
 		default:
 			throw new RuntimeException("Map type not found: " + type);
 		}
-		shareLocation(ctx, mapUrl, lat, lon, alt, bearing, acc,
-				speed, title, slat, slon, salt, sbear, sacc, sspeed, msgLenTxt, msgShareViaTxt);
+		shareLocation(ctx, mapUrl, lat, lon, alt, bearing, acc, speed, title, slat, slon, salt, sbear, sacc, sspeed,
+				msgLenTxt, msgShareViaTxt);
 	}
 
 	public static void shareLocation(Context ctx, String mapUrl, Unit lat, Unit lon, Unit alt, Unit bearing, Unit acc,
@@ -312,21 +312,28 @@ public class IntentTools {
 		final Intent emailIntent = new Intent(android.content.Intent.ACTION_SEND_MULTIPLE);
 		emailIntent.setType("*/*");
 		emailIntent.putExtra(android.content.Intent.EXTRA_EMAIL, new String[] { emailTo });
-		emailIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, subject);
+		if (subject != null) {
+			emailIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, subject);
+		}
 		// emailIntent.putExtra(android.content.Intent.EXTRA_TEXT,
 		// etLog.getText().toString());
-		emailIntent.putExtra(android.content.Intent.EXTRA_CC, new String[] { emailCC });
+		if (emailCC != null) {
+			emailIntent.putExtra(android.content.Intent.EXTRA_CC, new String[] { emailCC });
+		}
 		// has to be an ArrayList
 		ArrayList<Uri> uris = new ArrayList<Uri>();
 		// convert from paths to Android friendly Parcelable Uri's
-		for (String file : filePaths) {
-			File fileIn = new File(file);
-			Uri u = Uri.fromFile(fileIn);
-			uris.add(u);
+		if (filePaths != null) {
+			for (String file : filePaths) {
+				File fileIn = new File(file);
+				Uri u = Uri.fromFile(fileIn);
+				uris.add(u);
+			}
 		}
-
-		emailIntent.putParcelableArrayListExtra(Intent.EXTRA_STREAM, uris);
-		context.startActivity(Intent.createChooser(emailIntent, "Send files..."));
+		if (filePaths != null) {
+			emailIntent.putParcelableArrayListExtra(Intent.EXTRA_STREAM, uris);
+		}
+		context.startActivity(Intent.createChooser(emailIntent, "Mail"));
 	}
 
 	@SuppressLint("NewApi")
