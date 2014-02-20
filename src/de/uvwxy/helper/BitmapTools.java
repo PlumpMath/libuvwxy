@@ -2,8 +2,6 @@ package de.uvwxy.helper;
 
 import java.io.ByteArrayOutputStream;
 
-import com.google.common.base.Preconditions;
-
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;

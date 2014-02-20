@@ -6,8 +6,8 @@ import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothSocket;
 import android.util.Log;
 
-import com.google.common.base.Preconditions;
 
+import de.uvwxy.helper.Preconditions;
 import de.uvwxy.net.AConnection;
 import de.uvwxy.net.ConnectionType;
 

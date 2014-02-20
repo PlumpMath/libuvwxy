@@ -1,8 +1,7 @@
 package de.uvwxy.audio;
 
 import android.media.SoundPool;
-
-import com.google.common.base.Preconditions;
+import de.uvwxy.helper.Preconditions;
 
 public class AudioParameters {
 	private AudioParameters backup;

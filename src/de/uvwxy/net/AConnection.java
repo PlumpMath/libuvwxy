@@ -5,9 +5,9 @@ import java.io.OutputStream;
 
 import android.util.Log;
 
-import com.google.common.base.Preconditions;
 import com.google.protobuf.MessageOrBuilder;
 
+import de.uvwxy.helper.Preconditions;
 import de.uvwxy.proto.parser.ProtoInputStreamParser;
 
 public abstract class AConnection {

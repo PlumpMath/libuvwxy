@@ -36,7 +36,6 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.common.base.Preconditions;
 
 import de.uvwxy.phone.PhoneID;
 

@@ -5,8 +5,9 @@ import java.io.InputStream;
 
 import android.util.Log;
 
-import com.google.common.base.Preconditions;
 import com.google.protobuf.MessageOrBuilder;
+
+import de.uvwxy.helper.Preconditions;
 
 public class ProtoInputStreamParser<E extends MessageOrBuilder> {
 
@@ -62,7 +63,8 @@ public class ProtoInputStreamParser<E extends MessageOrBuilder> {
 
 	Thread threadParse = new Thread(pollProtoSocketThread);
 
-	public ProtoInputStreamParser(IProtoMessageReceiver<E> messageReceiveCallback, IProtoMessageParser<E> messageParserCallback, InputStream inputStream) {
+	public ProtoInputStreamParser(IProtoMessageReceiver<E> messageReceiveCallback,
+			IProtoMessageParser<E> messageParserCallback, InputStream inputStream) {
 		super();
 
 		Preconditions.checkNotNull(messageReceiveCallback);

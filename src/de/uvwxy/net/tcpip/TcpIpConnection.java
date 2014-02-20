@@ -3,8 +3,7 @@ package de.uvwxy.net.tcpip;
 import java.io.IOException;
 import java.net.Socket;
 
-import com.google.common.base.Preconditions;
-
+import de.uvwxy.helper.Preconditions;
 import de.uvwxy.net.AConnection;
 import de.uvwxy.net.ConnectionType;
 

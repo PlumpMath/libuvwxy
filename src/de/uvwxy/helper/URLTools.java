@@ -4,8 +4,6 @@ import java.util.regex.Pattern;
 
 import android.util.Log;
 
-import com.google.common.base.Preconditions;
-
 public class URLTools {
 	public static String getParamValue(String url, String param) {
 		Preconditions.checkNotNull(url);

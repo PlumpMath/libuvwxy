@@ -7,8 +7,7 @@ import java.net.Socket;
 import android.os.Handler;
 import android.util.Log;
 
-import com.google.common.base.Preconditions;
-
+import de.uvwxy.helper.Preconditions;
 import de.uvwxy.net.AConnectionSetup;
 import de.uvwxy.net.ICancelHandler;
 import de.uvwxy.net.IConnectHandler;
@@ -104,7 +103,8 @@ public class TcpIPConnectionSetup extends AConnectionSetup {
 		private IProtocol protocol;
 		private Object commLock;
 
-		public TcpIpClientSetupThread(IProtocol protocol, IConnectHandler handler, String address, int port, Object commLock) {
+		public TcpIpClientSetupThread(IProtocol protocol, IConnectHandler handler, String address, int port,
+				Object commLock) {
 			Preconditions.checkNotNull(handler);
 			Preconditions.checkNotNull(address);
 

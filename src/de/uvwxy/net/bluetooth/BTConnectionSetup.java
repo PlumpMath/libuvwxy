@@ -15,8 +15,7 @@ import android.os.Handler;
 import android.util.Log;
 import android.widget.Toast;
 
-import com.google.common.base.Preconditions;
-
+import de.uvwxy.helper.Preconditions;
 import de.uvwxy.net.AConnectionSetup;
 import de.uvwxy.net.ICancelHandler;
 import de.uvwxy.net.IConnectHandler;

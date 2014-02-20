@@ -1,6 +1,6 @@
 package de.uvwxy.net;
 
-import com.google.common.base.Preconditions;
+import de.uvwxy.helper.Preconditions;
 
 /**
  * This is a try to create a general model to create connections using
@@ -32,6 +32,7 @@ public abstract class AConnectionSetup {
 
 	/**
 	 * Will listen until the cancel handler is evoked.
+	 * 
 	 * @param protocol
 	 * @param handler
 	 * @return
