@@ -10,6 +10,8 @@ public class UnitConversion {
 		addConversion(new Conversion(Unit.METRE, Unit.FOOT, 3.28084));
 		addConversion(new Conversion(Unit.METRE, Unit.MILE, 0.000621371));
 		addConversion(new Conversion(Unit.METRE, Unit.YARD, 1.09361));
+		addConversion(new Conversion(Unit.METRES_PER_SECOND, Unit.KILOMETRES_PER_HOUR, 3.6));
+		addConversion(new Conversion(Unit.METRES_PER_SECOND, Unit.MILES_PER_HOUR, 2.23694));
 		addConversion(new Conversion(Unit.DEGREES, Unit.DEGREES_MINUTES_SECONDS, 1.0));
 	}
 

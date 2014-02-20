@@ -18,7 +18,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
-import android.location.Location;
 import android.net.Uri;
 import android.provider.MediaStore;
 import android.util.Log;
@@ -35,9 +34,8 @@ import android.widget.RadioButton;
 import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
-
-
 import de.uvwxy.phone.PhoneID;
+import de.uvwxy.units.Unit;
 
 public class IntentTools {
 	public static void captureImage(Activity activity, String imagePath, int requestCode) {
@@ -72,37 +70,38 @@ public class IntentTools {
 	public static final int TYPE_GMAPS = 0;
 	public static final int TYPE_OSM = 1;
 
-	public static void shareLocation(Context ctx, Location l, int type, String title, String slat, String slon,
-			String salt, String sbear, String sacc, String sspeed, String msgLenTxt, String msgShareViaTxt) {
+	public static void shareLocation(Context ctx, Unit lat, Unit lon, Unit alt, Unit bearing, Unit acc, Unit speed,
+			int type, String title, String slat, String slon, String salt, String sbear, String sacc, String sspeed,
+			String msgLenTxt, String msgShareViaTxt) {
 		String mapUrl = "MapTypeNotFound";
 		switch (type) {
 		case TYPE_GMAPS:
-			mapUrl = getGoogleMapsUrl(l.getLatitude(), l.getLongitude());
+			mapUrl = getGoogleMapsUrl(lat.to(Unit.DEGREES).getValue(), lon.to(Unit.DEGREES).getValue());
 			break;
 		case TYPE_OSM:
-			mapUrl = getOSMMapsUrl(l.getLatitude(), l.getLongitude());
+			mapUrl = getOSMMapsUrl(lat.to(Unit.DEGREES).getValue(), lon.to(Unit.DEGREES).getValue());
 			break;
 		default:
 			throw new RuntimeException("Map type not found: " + type);
 		}
-		shareLocation(ctx, mapUrl, l.getLatitude(), l.getLongitude(), l.getAltitude(), l.getBearing(), l.getAccuracy(),
-				l.getSpeed(), title, slat, slon, salt, sbear, sacc, sspeed, msgLenTxt, msgShareViaTxt);
+		shareLocation(ctx, mapUrl, lat, lon, alt, bearing, acc,
+				speed, title, slat, slon, salt, sbear, sacc, sspeed, msgLenTxt, msgShareViaTxt);
 	}
 
-	public static void shareLocation(Context ctx, String mapUrl, double lat, double lon, double alt, double bearing,
-			double acc, double speed, String title, String slat, String slon, String salt, String sbear, String sacc,
-			String sspeed, String msgLenTxt, String msgShareViaTxt) {
+	public static void shareLocation(Context ctx, String mapUrl, Unit lat, Unit lon, Unit alt, Unit bearing, Unit acc,
+			Unit speed, String title, String slat, String slon, String salt, String sbear, String sacc, String sspeed,
+			String msgLenTxt, String msgShareViaTxt) {
 		// https://maps.google.com/maps?q=50.070,+7.666
 		String msg = mapUrl;
 
 		NumberFormat nf = NumberFormat.getInstance();
 		nf.setMaximumFractionDigits(8);
-		msg += "\n" + slat + nf.format(lat) + " °";
-		msg += "\n" + slon + nf.format(lon) + " °";
-		msg += "\n" + salt + String.format("%.1f", alt) + " m";
-		msg += "\n" + sspeed + String.format("%.1f", speed) + " m";
-		msg += "\n" + sbear + String.format("%.1f", bearing) + " °";
-		msg += "\n" + sacc + String.format("%.1f", acc) + " m";
+		msg += "\n" + slat + " " + lat;
+		msg += "\n" + slon + " " + lon;
+		msg += "\n" + salt + " " + alt;
+		msg += "\n" + sspeed + " " + speed;
+		msg += "\n" + sbear + " " + bearing;
+		msg += "\n" + sacc + " " + acc;
 
 		Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
 		sharingIntent.setType("text/plain");
@@ -474,8 +473,8 @@ public class IntentTools {
 			}
 		});
 	}
-	
-	public static boolean isApiLarger(int apiVersion){
+
+	public static boolean isApiLarger(int apiVersion) {
 		int apiV = android.os.Build.VERSION.SDK_INT;
 		return apiV > apiVersion;
 	}
