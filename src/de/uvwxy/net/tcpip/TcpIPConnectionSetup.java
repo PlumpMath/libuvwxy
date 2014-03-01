@@ -177,36 +177,26 @@ public class TcpIPConnectionSetup extends AConnectionSetup {
 	// TODO: This is not implemented yet
 	@Override
 	public void setInterfaceEnabled(boolean enabled) {
-		// TODO Auto-generated method stub
-
 	}
 
 	// TODO: This is not implemented yet
 	@Override
 	public void startDiscovery() {
-		// TODO Auto-generated method stub
-
 	}
 
 	// TODO: This is not implemented yet
 	@Override
 	public void stopDiscovery() {
-		// TODO Auto-generated method stub
-
 	}
 
 	// TODO: This is not implemented yet
 	@Override
 	public void startVisibility(long seconds) {
-		// TODO Auto-generated method stub
-
 	}
 
 	// TODO: This is not implemented yet
 	@Override
 	public void stopVisiblity() {
-		// TODO Auto-generated method stub
-
 	}
 
 	@Override

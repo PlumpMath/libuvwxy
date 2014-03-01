@@ -165,7 +165,6 @@ public class BTConnectionSetup extends AConnectionSetup {
 					try {
 						mmServerSocket.close();
 					} catch (IOException e1) {
-						// TODO Auto-generated catch block
 						e1.printStackTrace();
 					}
 

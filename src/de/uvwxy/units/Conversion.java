@@ -2,8 +2,8 @@ package de.uvwxy.units;
 
 public class Conversion {
 	public static String ID_DELIM = "_";
-	private Unit a;
-	private Unit b;
+	private String a;
+	private String b;
 	private double factor;
 
 	/**
@@ -14,14 +14,14 @@ public class Conversion {
 	 * @param b
 	 * @param factor
 	 */
-	public Conversion(Unit a, Unit b, double factor) {
+	public Conversion(String a, String b, double factor) {
 		this.a = a;
 		this.b = b;
 		this.factor = factor;
 	}
 
-	public static String createKey(Unit a, Unit b) {
-		return a.name() + ID_DELIM + b.name();
+	public static String createKey(String a, String b) {
+		return a + ID_DELIM + b;
 	}
 
 	public String getKey() {
@@ -29,10 +29,10 @@ public class Conversion {
 	}
 
 	public Unit to(Unit to, double value) {
-		if (b.name().equals(to.name())) {
-			return to.setValue(value * factor);
+		if (b.equals(to.getName())) {
+			return Unit.from(to.getName()).setValue(value * factor);
 		} else {
-			return to.setValue(value / factor);
+			return Unit.from(to.getName()).setValue(value / factor);
 		}
 	};
 }

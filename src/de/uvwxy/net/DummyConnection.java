@@ -17,8 +17,6 @@ public class DummyConnection extends AConnection {
 
 	@Override
 	protected void closeImpl() {
-		// TODO Auto-generated method stub
-
 	}
 
 	@Override

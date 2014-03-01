@@ -20,7 +20,6 @@ import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.net.Uri;
 import android.provider.MediaStore;
-import android.util.Log;
 import android.util.TypedValue;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -34,6 +33,7 @@ import android.widget.RadioButton;
 import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
+import de.uvwxy.R;
 import de.uvwxy.phone.PhoneID;
 import de.uvwxy.units.Unit;
 
@@ -76,13 +76,13 @@ public class IntentTools {
 		String mapUrl = "MapTypeNotFound";
 		switch (type) {
 		case TYPE_GMAPS:
-			mapUrl = getGoogleMapsUrl(lat.to(Unit.DEGREES).getValue(), lon.to(Unit.DEGREES).getValue());
+			mapUrl = getGoogleMapsUrl(lat.to(Unit.from(Unit.DEGREES)).getValue(), lon.to(Unit.from(Unit.DEGREES)).getValue());
 			break;
 		case TYPE_OSM:
-			mapUrl = getOSMMapsUrl(lat.to(Unit.DEGREES).getValue(), lon.to(Unit.DEGREES).getValue());
+			mapUrl = getOSMMapsUrl(lat.to(Unit.from(Unit.DEGREES)).getValue(), lon.to(Unit.from(Unit.DEGREES)).getValue());
 			break;
 		default:
-			throw new RuntimeException("Map type not found: " + type);
+			throw new RuntimeException(ctx.getString(R.string.map_type_not_found_) + type);
 		}
 		shareLocation(ctx, mapUrl, lat, lon, alt, bearing, acc, speed, title, slat, slon, salt, sbear, sacc, sspeed,
 				msgLenTxt, msgShareViaTxt);
@@ -266,7 +266,7 @@ public class IntentTools {
 		t.setHint(textHint);
 
 		if (update) {
-			t.setText(getSettings(ctx, settingsId).getString(valueId, "not set"));
+			t.setText(getSettings(ctx, settingsId).getString(valueId, ctx.getString(R.string.not_set)));
 		}
 
 		if (!update && settingsValuesIsSet(ctx, settingsId, valueId)) {
@@ -276,7 +276,7 @@ public class IntentTools {
 
 		final AlertDialog.Builder alertDialog = new AlertDialog.Builder(ctx);
 
-		alertDialog.setPositiveButton("Save", new DialogInterface.OnClickListener() {
+		alertDialog.setPositiveButton(ctx.getString(R.string.save), new DialogInterface.OnClickListener() {
 			@Override
 			public void onClick(DialogInterface dialog, int which) {
 				String userName = "";
@@ -466,8 +466,6 @@ public class IntentTools {
 			final String settingsKey, final int thisRBID) {
 		SharedPreferences prefs = getSettings(ctx, settingsID);
 		rb.setChecked(prefs.getInt(settingsKey, 0) == thisRBID);
-		Log.d("UVWXY", "settingsID = " + settingsID + " settingsKey = " + settingsKey + " id = " + thisRBID);
-		Log.d("UVWXY", "prefs is " + prefs.getInt(settingsKey, 0));
 		rb.setOnCheckedChangeListener(new OnCheckedChangeListener() {
 
 			@Override

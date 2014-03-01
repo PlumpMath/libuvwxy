@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="save">Speichern</string>
+    <string name="not_set">nicht gesetzt</string>
+    <string name="map_type_not_found_">Karten typ nicht gefunden: </string>
+</resources>
