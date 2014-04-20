@@ -52,9 +52,9 @@ public class Unit {
 		} else if (POUNDS_PER_SQUARE_INCH.equals(name)) {
 			return new Unit(POUNDS_PER_SQUARE_INCH, "psi", 2);
 		} else if (STANDARD_ATMOSPHERE.equals(name)) {
-			return new Unit(STANDARD_ATMOSPHERE, "atm", 2);
+			return new Unit(STANDARD_ATMOSPHERE, "atm", 3);
 		} else if (TECHNICAL_ATMOSPHERE.equals(name)) {
-			return new Unit(TECHNICAL_ATMOSPHERE, "at", 2);
+			return new Unit(TECHNICAL_ATMOSPHERE, "at", 3);
 		} else if (TORR.equals(name)) {
 			return new Unit(TORR, "Torr", 2);
 		} else if (YARD.equals(name)) {

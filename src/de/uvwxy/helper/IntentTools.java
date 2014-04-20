@@ -111,6 +111,23 @@ public class IntentTools {
 		ctx.startActivity(Intent.createChooser(sharingIntent, msgShareViaTxt));
 	}
 
+	public static void showLocation(final Activity act, final double lat, final double lon){
+		final String[] mapProviders = new String[]{"Google Maps","OSM"};
+		ReturnStringCallback selected = new ReturnStringCallback() {
+			
+			@Override
+			public void result(String s) {
+				String mapsUrl = "";
+				if (mapProviders[1].equals(s)){
+					mapsUrl = IntentTools.getOSMMapsUrl(lat, lon);
+				} else {
+					mapsUrl = IntentTools.getGoogleMapsUrl(lat, lon);
+				}
+				IntentTools.showURL(act, mapsUrl);
+			}
+		};
+		IntentTools.userSelectString(act, "Provider", mapProviders, selected);
+	}
 	public static String getOSMMapsUrl(double lat, double lon) {
 		return String.format(Locale.US, "http://www.openstreetmap.org/?lat=%f&lon=%f&zoom=17&layers=C", lat, lon);
 	}
