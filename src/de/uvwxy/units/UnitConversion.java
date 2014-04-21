@@ -29,12 +29,12 @@ public class UnitConversion {
 	}
 
 	public static Unit convert(Unit from, Unit to) {
-
+		
 		if (from.getName().equals(to.getName())) {
 			// identity conversion, but might change prefix
 			Unit ret = Unit.valueOf(from.getName());
 			ret.setValue(from.getValue());
-
+			ret.setPrefix(to.getPrefix());
 			return ret;
 		}
 		String key0 = Conversion.createKey(from.getName(), to.getName());
@@ -51,6 +51,7 @@ public class UnitConversion {
 		}
 
 		Unit ret = conv.to(to, from.getValue());
+		ret.setPrefix(to.getPrefix());
 
 		return ret;
 	}

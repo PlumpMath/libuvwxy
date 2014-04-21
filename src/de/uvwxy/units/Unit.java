@@ -1,5 +1,7 @@
 package de.uvwxy.units;
 
+import android.util.Log;
+
 public class Unit {
 	public static final String BAR = "BAR";
 	public static final String DEGREES = "DEGREES";
@@ -109,8 +111,13 @@ public class Unit {
 	}
 
 	public Unit setPrefix(UnitPrefix... p) {
+		Log.d("WAI", "Prefix: ? " + p);
 		this.prefix = p;
 		return this;
+	}
+	
+	public UnitPrefix[] getPrefix(){
+		return this.prefix;
 	}
 
 	public Unit setUnitString(String s) {
@@ -136,7 +143,7 @@ public class Unit {
 		if (conv == null) {
 			return String.format("%." + precision[0] + "f %s%s", v * prefix[0].factor(), prefix[0].s(), unit[0]);
 		}
-
+		Log.d("WAI","prefix: " + prefix[0]);
 		String ret = "";
 		for (int i = 0; i < unit.length; i++) {
 			ret += String.format("%s%s ", conv.getValue(i, precision[i], v), unit[i]);
