@@ -55,6 +55,7 @@ public abstract class SensorReader {
 	 * @param ctx
 	 * @param millisDuration
 	 *            if -1 instant reporting of values
+	 *            if -2 instant reporting of single value
 	 * @param cb
 	 */
 	public SensorReader(Context ctx, long millisDuration, SensorResultCallback cb) {
